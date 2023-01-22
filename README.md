@@ -7,29 +7,6 @@
 
 <p align="center">Join modded servers without worrying about installing Java, Forge, or other mods. We'll handle that for you.</p>
 
-
-## Features
-
-* 🔒 Full account management.
-  * Add multiple accounts and easily switch between them.
-  * Microsoft (OAuth 2.0) + Mojang (Yggdrasil) authentication fully supported.
-  * Credentials are never stored and transmitted directly to Mojang.
-* 📂 Efficient asset management.
-  * Receive client updates as soon as we release them.
-  * Files are validated before launch. Corrupt or incorrect files will be redownloaded.
-* ☕ **Automatic Java validation.**
-  * If you have an incompatible version of Java installed, we'll install the right one *for you*.
-  * You do not need to have Java installed to run the launcher.
-* 📰 News feed natively built into the launcher.
-* ⚙️ Intuitive settings management, including a Java control panel.
-* Supports all of our servers.
-  * Switch between server configurations with ease.
-  * View the player count of the selected server.
-* Automatic updates. That's right, the launcher updates itself.
-*  View the status of Mojang's services.
-
-This is not an exhaustive list. Download and install the launcher to gauge all it can do!
-
 #### Need Help? [Check the wiki.][wiki]
 
 #### Like the project? Leave a ⭐ star on the repository!
@@ -65,17 +42,6 @@ If you download from the [Releases](https://github.com/PalaDrill-Staff/PalaDrill
 > cd HeliosLauncher
 > npm install
 ```
-
----
-
-**Launch Application**
-
-```console
-> npm start
-```
-
----
-
 **Build Installers**
 
 To build for your current platform.
@@ -113,17 +79,5 @@ Note that you **cannot** open the DevTools window while using this debug configu
 Please give credit to the original author and provide a link to the original source. This is free software, please do at least this much.
 
 For instructions on setting up Microsoft Authentication, see https://github.com/dscalzi/HeliosLauncher/blob/feature/ms-auth/docs/MicrosoftAuth.md.
-
----
-
-## Resources
-
-* [Wiki][wiki]
-* [Nebula (Create Distribution.json)][nebula]
-* [v2 Rewrite Branch (Inactive)][v2branch]
-
-The best way to contact the developers is on Discord.
-
-[![discord](https://discordapp.com/api/guilds/211524927831015424/embed.png?style=banner3)][discord]
 
 ---
