@@ -2,9 +2,6 @@
 
 <h1 align="center">PalaDrill Launcher</h1>
 
-<em><h5 align="center">(formerly Electron Launcher)</h5></em>
-
-
 <p align="center">Join modded servers without worrying about installing Java, Forge, or other mods. We'll handle that for you.</p>
 
 #### Need Help? [Check the wiki.][wiki]
