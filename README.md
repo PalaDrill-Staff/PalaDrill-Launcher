@@ -2,13 +2,14 @@
 
 <h1 align="center">PalaDrill Launcher</h1>
 
-<p align="center">Join modded servers without worrying about installing Java, Forge, or other mods. We'll handle that for you.</p>
+<p align="center">Join PalaDrill server without installing Java, Forge, or other mods. We'll handle that for you.</p>
 
-#### Like the project? Leave a ⭐ star on the repository!
+#### Like the PalaDrill project? Leave a ⭐ star on the repository!
 
 ## Downloads
 
 You can download from [GitHub Releases](https://github.com/PalaDrill-Staff/PalaDrill-Launcher/releases)
+
 
 **Supported Platforms**
 
@@ -25,7 +26,7 @@ If you download from the [Releases](https://github.com/PalaDrill-Staff/PalaDrill
 
 **System Requirements**
 
-* [Node.js][nodejs] v16
+* [Node.js](https://nodejs.org) >14
 
 ---
 
@@ -33,7 +34,7 @@ If you download from the [Releases](https://github.com/PalaDrill-Staff/PalaDrill
 
 ```console
 > git clone https://github.com/PalaDrill-Staff/PalaDrill-Launcher.git
-> cd PalaDrill-Launcher
+> cd HeliosLauncher
 > npm install
 ```
 **Build Installers**
@@ -41,7 +42,7 @@ If you download from the [Releases](https://github.com/PalaDrill-Staff/PalaDrill
 To build for your current platform.
 
 ```console
-> npm run distPalaDrill-Launcher
+> npm run dist
 ```
 
 Build for a specific platform.
@@ -54,26 +55,6 @@ Build for a specific platform.
 
 Builds for macOS may not work on Windows/Linux and vice-versa.
 
-This adds two debug configurations.
+This adds two debug configurations.s
 
-#### Debug Main Process
-
-This allows you to debug Electron's [main process][mainprocess]. You can debug scripts in the [renderer process][rendererprocess] by opening the DevTools Window.
-
-#### Debug Renderer Process
-
-This allows you to debug Electron's [renderer process][rendererprocess]. This requires you to install the [Debugger for Chrome][chromedebugger] extension.
-
-Note that you **cannot** open the DevTools window while using this debug configuration. Chromium only allows one debugger, opening another will crash the program.
-
----
-
-### Note on Third-Party Usage
-
-Please give credit to the original author and provide a link to the original source. This is free software, please do at least this much.
-
-For instructions on setting up Microsoft Authentication, see https://github.com/PalaDrill-Staff/PalaDrill-Launcher/blob/feature/ms-auth/docs/MicrosoftAuth.md.
-
-## Credit
-Based on https://github.com/dscalzi/HeliosLauncher
----
+## Source on https://github.com/dscalzi/PalaDrill
