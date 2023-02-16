@@ -397,9 +397,6 @@ class ProcessBuilder {
                 )
             }
         }
-
-        //args.push('-Dlog4j.configurationFile=D:\\WesterosCraft\\game\\common\\assets\\log_configs\\client-1.12.xml')
-
         // Java Arguments
         if(process.platform === 'darwin'){
             args.push('-Xdock:name=HeliosLauncher')
