@@ -1,6 +1,6 @@
 <p align="center"><img src="./app/assets/images/SealCircle.png" width="150px" height="150px" alt="aventium softworks"></p>
 
-<h1 align="center">Helios Launcher</h1>
+<h1 align="center">PalaDrill Launcher</h1>
 
 <em><h5 align="center">(formerly Electron Launcher)</h5></em>
 
@@ -78,6 +78,8 @@ Note that you **cannot** open the DevTools window while using this debug configu
 
 Please give credit to the original author and provide a link to the original source. This is free software, please do at least this much.
 
-For instructions on setting up Microsoft Authentication, see https://github.com/dscalzi/HeliosLauncher/blob/feature/ms-auth/docs/MicrosoftAuth.md.
+For instructions on setting up Microsoft Authentication, see https://github.com/PalaDrill-Staff/PalaDrill-Launcher/blob/feature/ms-auth/docs/MicrosoftAuth.md.
 
+## Credit
+Based on https://github.com/dscalzi/PalaDrill
 ---
