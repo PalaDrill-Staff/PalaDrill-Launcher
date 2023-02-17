@@ -57,4 +57,4 @@ Builds for macOS may not work on Windows/Linux and vice-versa.
 
 This adds two debug configurations.s
 
-## Source on https://github.com/dscalzi/PalaDrill
+## Source on https://github.com/dscalzi/HeliosLauncher
