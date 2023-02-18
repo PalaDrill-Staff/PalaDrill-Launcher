@@ -34,7 +34,7 @@ If you download from the [Releases](https://github.com/PalaDrill-Staff/PalaDrill
 
 ```console
 > git clone https://github.com/PalaDrill-Staff/PalaDrill-Launcher.git
-> cd HeliosLauncher
+> cd PalaDrill-Launcher
 > npm install
 ```
 **Build Installers**
