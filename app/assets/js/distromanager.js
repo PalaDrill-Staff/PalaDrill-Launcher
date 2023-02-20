@@ -548,7 +548,7 @@ exports.pullRemote = function(){
         return exports.pullLocal()
     }
     return new Promise((resolve, reject) => {
-        const distroURL = 'http://french.myserver.cool:25598/files/paladrill/distribution.json'
+        const distroURL = 'https://raw.githubusercontent.com/PalaDrill-Staff/PalaDrill-Distro/main/distribution.json'
         const opts = {
             url: distroURL,
             timeout: 2500
