@@ -2,13 +2,14 @@ const {ipcRenderer}  = require('electron')
 const fs             = require('fs-extra')
 const os             = require('os')
 const path           = require('path')
+const crypto         = require('crypto');
 
 const ConfigManager  = require('./configmanager')
 const DistroManager  = require('./distromanager')
 const LangLoader     = require('./langloader')
 const { LoggerUtil } = require('helios-core')
-
 const logger = LoggerUtil.getLogger('Preloader')
+const hwid = require('./scripts/hwid.js');
 
 logger.info('Loading..')
 
@@ -29,6 +30,9 @@ function onDistroLoad(data){
         }
     }
     ipcRenderer.send('distributionIndexDone', data != null)
+    //hwid check
+    var hw = hwid.getHWID()
+    console.log(hw);
 }
 
 // Ensure Distribution is downloaded and cached.
@@ -69,3 +73,15 @@ fs.remove(path.join(os.tmpdir(), ConfigManager.getTempNativeFolder()), (err) => 
         logger.info('Cleaned natives directory.')
     }
 })
+
+// Clean up temp dir incase previous launches ended unexpectedly.
+
+
+console.log("hwid")
+hwidValue = hwid.getHWID().then((hwid) => {
+    return hwid;
+});
+
+hwidValue = hwidValue.toString();
+hwidHash = crypto.createHash('sha256').update(hwidValue).digest('hex');
+console.log(hwidHash);
