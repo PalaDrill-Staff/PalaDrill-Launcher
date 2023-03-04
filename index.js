@@ -338,13 +338,67 @@ app.on('activate', () => {
 })
 
 const client = require('discord-rich-presence')('1066511691048828998');
- 
-client.updatePresence({
-  state: 'Playing on the PalaDrill server',
-  details: '⛏',
-  startTimestamp: Date.now(),
-  endTimestamp: Date.now() + 1337,
-  largeImageKey: 'paladrill',
-  smallImageKey: 'online',
-  instance: true,
-})
+const net = require('net')
+
+port = 60514
+address = "game1-fr.hosterfy.com"
+
+  if(port == null || port == ''){
+    port = 25565
+}
+if(typeof port === 'string'){
+    port = parseInt(port)
+}
+
+return new Promise((resolve, reject) => {
+    const socket = net.connect(port, address, () => {
+        let buff = Buffer.from([0xFE, 0x01])
+        socket.write(buff)
+    })
+
+    socket.setTimeout(2500, () => {
+        socket.end()
+        reject({
+            code: 'ETIMEDOUT',
+            errno: 'ETIMEDOUT',
+            address,
+            port
+        })
+    })
+
+    socket.on('data', (data) => {
+        if(data != null && data != ''){
+            let server_info = data.toString().split('\x00\x00\x00')
+            const NUM_FIELDS = 6
+            if(server_info != null && server_info.length >= NUM_FIELDS){
+                e = ({
+                    online: true,
+                    version: server_info[2].replace(/\u0000/g, ''),
+                    motd: server_info[3].replace(/\u0000/g, ''),
+                    onlinePlayers: server_info[4].replace(/\u0000/g, ''),
+                    maxPlayers: server_info[5].replace(/\u0000/g,'')
+                })
+                client.updatePresence({
+                    state: '⛏️ On Paladrill Launcher',
+                    details: '⛏️ pala.best',
+                    startTimestamp: new Date().getTime(),
+                    largeImageKey: 'paladrill',
+                    largeImageText: `Server on ${e.version}`,
+                    smallImageKey: 'online',
+                    smallImageText: `Server have ${e.onlinePlayers} players connected.`,
+                    instance: false,
+                  });
+            } else {
+                resolve({
+                    online: false
+                })
+            }
+        }
+        socket.end()
+    })
+
+    socket.on('error', (err) => {
+        socket.destroy()
+        reject(err)
+    })
+})  
