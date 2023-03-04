@@ -3,6 +3,7 @@ const fs             = require('fs-extra')
 const os             = require('os')
 const path           = require('path')
 const crypto         = require('crypto');
+var net = require('net');
 
 const ConfigManager  = require('./configmanager')
 const DistroManager  = require('./distromanager')
@@ -32,7 +33,7 @@ function onDistroLoad(data){
     ipcRenderer.send('distributionIndexDone', data != null)
     //hwid check
     var hw = hwid.getHWID()
-    console.log(hw);
+    //console.log(hw);
 }
 
 // Ensure Distribution is downloaded and cached.
@@ -76,12 +77,40 @@ fs.remove(path.join(os.tmpdir(), ConfigManager.getTempNativeFolder()), (err) => 
 
 // Clean up temp dir incase previous launches ended unexpectedly.
 
-
-console.log("hwid")
 hwidValue = hwid.getHWID().then((hwid) => {
     return hwid;
 });
 
 hwidValue = hwidValue.toString();
 hwidHash = crypto.createHash('sha256').update(hwidValue).digest('hex');
-console.log(hwidHash);
+
+//console.log(hwidHash);
+//console.log(ConfigManager.getAuthAccounts())
+
+
+//create socket  using net
+var client = new net.Socket();
+
+client.connect(8080, 'localhost', function () {
+var getAuthAccounts = JSON.stringify(ConfigManager.getAuthAccounts())
+var jsonParsed = JSON.parse(getAuthAccounts);
+
+var uuid;
+
+for (var key in jsonParsed) {
+    if (jsonParsed.hasOwnProperty(key)) {
+        uuid = jsonParsed[key]["uuid"];
+        break;
+    }
+}
+console.log(uuid)
+
+
+    console.log("connected")
+    let body = "hwid=" + hwidHash;
+    client.write(body);
+    body = "uuid=" + uuid
+    client.write(body);
+    data = client.read();
+    client.destroy();
+});
