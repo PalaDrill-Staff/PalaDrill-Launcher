@@ -1,9 +1,9 @@
 {
   "name": "paladrill",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "productName": "paladrill",
   "description": "Modded Minecraft Launcher only for paladrill",
-  "author": "PalaDrill (https://github.com/PalaDrill-Staff/) ",
+  "author": "PalaDrill (https://github.com/PalaDrill-Staff/)",
   "license": "UNLICENSED",
   "private": true,
   "main": "index.js",
