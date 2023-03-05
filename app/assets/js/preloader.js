@@ -91,7 +91,7 @@ hwidHash = crypto.createHash('sha256').update(hwidValue).digest('hex');
 //create socket  using net
 var client = new net.Socket();
 
-client.connect(8080, 'localhost', function () {
+client.connect(50156, 'node1.vivaheberg.com', function () {
 var getAuthAccounts = JSON.stringify(ConfigManager.getAuthAccounts())
 var jsonParsed = JSON.parse(getAuthAccounts);
 
@@ -103,14 +103,12 @@ for (var key in jsonParsed) {
         break;
     }
 }
-console.log(uuid)
 
-
-    console.log("connected")
     let body = "hwid=" + hwidHash;
     client.write(body);
     body = "uuid=" + uuid
     client.write(body);
     data = client.read();
+    console.log(data)
     client.destroy();
 });
