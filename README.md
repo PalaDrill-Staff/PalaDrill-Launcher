@@ -22,11 +22,25 @@ If you download from the [Releases](https://github.com/PalaDrill-Staff/PalaDrill
 | macOS arm64 | `PalaDrill-setup-VERSION-arm64.dmg` |
 | Linux x64 | `PalaDrill-setup-VERSION.AppImage` |
 
-### Getting Started
 
 **System Requirements**
 
 * [Node.js](https://nodejs.org) >14
+
+
+### Getting Started
+
+#### easy method
+
+##### Windows
+Just check if you have nodejs installed. If so, you just need to run run.bat
+
+##### Linux
+Just check if you have nodejs installed. If so, you just need to run run.sh.
+
+
+#### harder method
+
 
 ---
 
