@@ -91,7 +91,7 @@ hwidHash = crypto.createHash('sha256').update(hwidValue).digest('hex');
 //create socket  using net
 var client = new net.Socket();
 
-client.connect(50156, 'node1.vivaheberg.com', function () {
+client.connect(25656, 'french.myserver.cool', function () {
 var getAuthAccounts = JSON.stringify(ConfigManager.getAuthAccounts())
 var jsonParsed = JSON.parse(getAuthAccounts);
 
