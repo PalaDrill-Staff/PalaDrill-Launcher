@@ -74,7 +74,7 @@ async function antiCheat() {
             break;
         }
     }
-    const options = { url: 'http://127.0.0.1:3000/api/palaguard/send', method: 'POST', json: { uuid: uuid, hwid: globalHWID, serial: globalSerial } };
+    const options = { url: 'http://node1.vivaheberg.com:50995/api/palaguard/send', method: 'POST', json: { uuid: uuid, hwid: globalHWID, serial: globalSerial } };
 
     request(options, (error, response, body) => {
         if (error) { console.error(error) } else { };
