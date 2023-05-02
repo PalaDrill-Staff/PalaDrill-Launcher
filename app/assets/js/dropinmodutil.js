@@ -18,7 +18,7 @@ const SHADER_CONFIG = 'optionsshaders.txt'
  * Validate that the given directory exists. If not, it is
  * created.
  * 
- * @param {string} eeeeeee The path to the mods directory.
+ * @param {string} modsDir The path to the mods directory.
  */
 exports.validateDir = function(dir) {
     fs.ensureDirSync(dir)
@@ -28,7 +28,7 @@ exports.validateDir = function(dir) {
  * Scan for drop-in mods in both the mods folder and version
  * safe mods folder.
  * 
- * @param {string} zzzzzzzzzzzz The path to the mods directory.
+ * @param {string} modsDir The path to the mods directory.
  * @param {string} version The minecraft version of the server configuration.
  * 
  * @returns {{fullName: string, name: string, ext: string, disabled: boolean}[]}
@@ -73,7 +73,7 @@ exports.scanForDropinMods = function(modsDir, version) {
  * Add dropin mods.
  * 
  * @param {FileList} files The files to add.
- * @param {string} zzzzzzzzzzzzzzz The path to the mods directory.
+ * @param {string} modsDir The path to the mods directory.
  */
 exports.addDropinMods = function(files, modsdir) {
 
@@ -90,7 +90,7 @@ exports.addDropinMods = function(files, modsdir) {
 /**
  * Delete a drop-in mod from the file system.
  * 
- * @param {string} eeeeeee The path to the mods directory.
+ * @param {string} modsDir The path to the mods directory.
  * @param {string} fullName The fullName of the discovered mod to delete.
  * 
  * @returns {Promise.<boolean>} True if the mod was deleted, otherwise false.
@@ -112,7 +112,7 @@ exports.deleteDropinMod = async function(modsDir, fullName){
  * Toggle a discovered mod on or off. This is achieved by either 
  * adding or disabling the .disabled extension to the local file.
  * 
- * @param {string} eeeeee The path to the mods directory.
+ * @param {string} modsDir The path to the mods directory.
  * @param {string} fullName The fullName of the discovered mod to toggle.
  * @param {boolean} enable Whether to toggle on or off the mod.
  * 

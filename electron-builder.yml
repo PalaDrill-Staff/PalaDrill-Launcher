@@ -1,14 +1,14 @@
 appId: 'paladrill'
-productName: 'Paladrill'
+productName: 'PalaDrill'
 artifactName: '${productName}-setup-${version}.${ext}'
 
-copyright: 'Copyright © 2023 PalaDrill'
+copyright: 'Copyright © 2022-2023 PalaDrill-Staff'
 
 asar: true
 compression: 'maximum'
 
 files:
-  - '!{dist,.gitignore,.vscode,docs,dev-app-update.yml,.travis.yml,.nvmrc,.eslintrc.json,build.js}'
+  - '!{dist,.gitignore,.vscode,docs,dev-app-update.yml,.nvmrc,.eslintrc.json}'
 
 extraResources:
   - 'libraries'
@@ -24,7 +24,7 @@ nsis:
   oneClick: false
   perMachine: false
   allowElevation: true
-  allowToChangeInstallationDirectory: false
+  allowToChangeInstallationDirectory: true
 
 # macOS Configuration
 mac:
@@ -39,9 +39,9 @@ mac:
 # Linux Configuration
 linux: 
   target: 'AppImage'
-  maintainer: 'e'
-  vendor: 'e'
-  synopsis: 'Modded Minecraft Launcher'
+  maintainer: 'PalaDrill-Staff'
+  vendor: 'PalaDrill-Staff'
+  synopsis: 'Modded Minecraft Launcher for PalaDrill'
   description: 'Custom launcher which allows users to join modded servers. All mods, configurations, and updates are handled automatically.'
   category: 'Game'
 

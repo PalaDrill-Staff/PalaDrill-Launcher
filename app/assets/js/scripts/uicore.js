@@ -37,8 +37,7 @@ webFrame.setVisualZoomLevelLimits(1, 1)
 
 // Initialize auto updates in production environments.
 let updateCheckListener
-/*
-if(1>2){
+if(!isDev){
     ipcRenderer.on('autoUpdateNotification', (event, arg, info) => {
         switch(arg){
             case 'checking-for-update':
@@ -49,7 +48,7 @@ if(1>2){
                 loggerAutoUpdater.info('New update available', info.version)
                 
                 if(process.platform === 'darwin'){
-                    info.darwindownload = `https://github.com/dscalzi/HeliosLauncher/releases/download/v${info.version}/Helios-Launcher-setup-${info.version}${process.arch === 'arm64' ? '-arm64' : '-x64'}.dmg`
+                    info.darwindownload = `https://github.com/PalaDrill-Staff/PalaDrill-Launcher/releases/download/v${info.version}/PalaDrill-Launcher-setup-${info.version}${process.arch === 'arm64' ? '-arm64' : '-x64'}.dmg`
                     showUpdateUI(info)
                 }
                 
@@ -92,7 +91,7 @@ if(1>2){
         }
     })
 }
-*/
+
 /**
  * Send a notification to the main process changing the value of
  * allowPrerelease. If we are running a prerelease version, then

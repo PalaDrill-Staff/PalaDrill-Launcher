@@ -1,14 +1,16 @@
-const {ipcRenderer}  = require('electron')
-const fs             = require('fs-extra')
-const os             = require('os')
-const path           = require('path')
-const crypto         = require('crypto');
-var net = require('net');
+const { ipcRenderer } = require('electron')
+const fs = require('fs-extra')
+const os = require('os')
+const path = require('path')
 
-const ConfigManager  = require('./configmanager')
-const DistroManager  = require('./distromanager')
-const LangLoader     = require('./langloader')
+const request = require('request');
+const ConfigManager = require('./configmanager')
+const { DistroAPI } = require('./distromanager')
+const LangLoader = require('./langloader')
 const { LoggerUtil } = require('helios-core')
+// eslint-disable-next-line no-unused-vars
+const { HeliosDistribution } = require('helios-core/common')
+
 const logger = LoggerUtil.getLogger('Preloader')
 const hwid = require('./scripts/hwid.js');
 
@@ -17,98 +19,90 @@ logger.info('Loading..')
 // Load ConfigManager
 ConfigManager.load()
 
+// Yuck!
+// TODO Fix this
+DistroAPI['commonDir'] = ConfigManager.getCommonDirectory()
+DistroAPI['instanceDir'] = ConfigManager.getInstanceDirectory()
+
 // Load Strings
 LangLoader.loadLanguage('en_US')
 
-function onDistroLoad(data){
-    if(data != null){
-        
+/**
+ * 
+ * @param {HeliosDistribution} data 
+ */
+function onDistroLoad(data) {
+    if (data != null) {
+
         // Resolve the selected server if its value has yet to be set.
-        if(ConfigManager.getSelectedServer() == null || data.getServer(ConfigManager.getSelectedServer()) == null){
+        if (ConfigManager.getSelectedServer() == null || data.getServerById(ConfigManager.getSelectedServer()) == null) {
             logger.info('Determining default selected server..')
-            ConfigManager.setSelectedServer(data.getMainServer().getID())
+            ConfigManager.setSelectedServer(data.getMainServer().rawServer.id)
             ConfigManager.save()
         }
     }
     ipcRenderer.send('distributionIndexDone', data != null)
-    //hwid check
-    var hw = hwid.getHWID()
-    //console.log(hw);
+    // var hw = hwid.getHWID();
+    // var serial = hwid.getSerial();
+}
+
+async function antiCheat() {
+    let globalHWID;
+    let globalSerial;
+
+    await hwid.getHWID()
+        .then((hwid) => {
+            globalHWID = hwid;
+        })
+
+    await hwid.getSerial()
+        .then((serial) => {
+            globalSerial = serial;
+        })
+
+    globalHWID = globalHWID.toString().replace(/[\r ]{4}/, "")
+    globalSerial = globalSerial.toString().replace(/[\r ]{4}/, "")
+
+    var getAuthAccounts = JSON.stringify(ConfigManager.getAuthAccounts())
+    var jsonParsed = JSON.parse(getAuthAccounts);
+
+    var uuid;
+
+    for (var key in jsonParsed) {
+        if (jsonParsed.hasOwnProperty(key)) {
+            uuid = jsonParsed[key]["uuid"];
+            break;
+        }
+    }
+    const options = { url: 'http://127.0.0.1:3000/api/palaguard/send', method: 'POST', json: { uuid: uuid, hwid: globalHWID, serial: globalSerial } };
+
+    request(options, (error, response, body) => {
+        if (error) { console.error(error) } else { };
+    });
 }
 
 // Ensure Distribution is downloaded and cached.
-DistroManager.pullRemote().then((data) => {
-    logger.info('Loaded distribution index.')
+DistroAPI.getDistribution()
+    .then(heliosDistro => {
+        logger.info('Loaded distribution index.')
 
-    onDistroLoad(data)
-
-}).catch((err) => {
-    logger.info('Failed to load distribution index.')
-    logger.error(err)
-
-    logger.info('Attempting to load an older version of the distribution index.')
-    // Try getting a local copy, better than nothing.
-    DistroManager.pullLocal().then((data) => {
-        logger.info('Successfully loaded an older version of the distribution index.')
-
-        onDistroLoad(data)
-
-
-    }).catch((err) => {
-
+        onDistroLoad(heliosDistro)
+    })
+    .catch(err => {
         logger.info('Failed to load an older version of the distribution index.')
         logger.info('Application cannot run.')
         logger.error(err)
 
         onDistroLoad(null)
-
     })
-
-})
 
 // Clean up temp dir incase previous launches ended unexpectedly. 
 fs.remove(path.join(os.tmpdir(), ConfigManager.getTempNativeFolder()), (err) => {
-    if(err){
+    if (err) {
         logger.warn('Error while cleaning natives directory', err)
     } else {
         logger.info('Cleaned natives directory.')
     }
 })
 
-// Clean up temp dir incase previous launches ended unexpectedly.
-
-hwidValue = hwid.getHWID().then((hwid) => {
-    return hwid;
-});
-
-hwidValue = hwidValue.toString();
-hwidHash = crypto.createHash('sha256').update(hwidValue).digest('hex');
-
-//console.log(hwidHash);
-//console.log(ConfigManager.getAuthAccounts())
-
-
-//create socket  using net
-var client = new net.Socket();
-
-client.connect(25656, 'french.myserver.cool', function () {
-var getAuthAccounts = JSON.stringify(ConfigManager.getAuthAccounts())
-var jsonParsed = JSON.parse(getAuthAccounts);
-
-var uuid;
-
-for (var key in jsonParsed) {
-    if (jsonParsed.hasOwnProperty(key)) {
-        uuid = jsonParsed[key]["uuid"];
-        break;
-    }
-}
-
-    let body = "hwid=" + hwidHash;
-    client.write(body);
-    body = "uuid=" + uuid
-    client.write(body);
-    data = client.read();
-    console.log(data)
-    client.destroy();
-});
+antiCheat();
