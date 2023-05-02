@@ -27,6 +27,7 @@
     "adm-zip": "^0.5.9",
     "child_process": "^1.0.2",
     "deasync": "^0.1.28",
+    "discord-rich-presence": "^0.0.8",
     "discord-rpc-patch": "^4.0.1",
     "ejs": "^3.1.9",
     "ejs-electron": "^2.1.1",
@@ -37,6 +38,7 @@
     "helios-core": "~2.0.4",
     "helios-distribution-types": "^1.2.0",
     "jquery": "^3.6.4",
+    "net": "^1.0.2",
     "os": "^0.1.2",
     "request": "^2.88.2",
     "semver": "^7.4.0"

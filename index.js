@@ -1,32 +1,34 @@
 const remoteMain = require('@electron/remote/main')
+const client = require('discord-rich-presence')('1066511691048828998');
+const srv = require('./app/assets/js/scripts/getServer')
 remoteMain.initialize()
 
 // Requirements
 const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron')
-const autoUpdater                       = require('electron-updater').autoUpdater
-const ejse                              = require('ejs-electron')
-const fs                                = require('fs')
-const isDev                             = require('./app/assets/js/isdev')
-const path                              = require('path')
-const semver                            = require('semver')
-const { pathToFileURL }                 = require('url')
+const autoUpdater = require('electron-updater').autoUpdater
+const ejse = require('ejs-electron')
+const fs = require('fs')
+const isDev = require('./app/assets/js/isdev')
+const path = require('path')
+const semver = require('semver')
+const { pathToFileURL } = require('url')
 const { AZURE_CLIENT_ID, MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./app/assets/js/ipcconstants')
 
 // Setup auto updater.
 function initAutoUpdater(event, data) {
 
-    if(data){
+    if (data) {
         autoUpdater.allowPrerelease = true
     } else {
         // Defaults to true if application version contains prerelease components (e.g. 0.12.1-alpha.1)
         // autoUpdater.allowPrerelease = true
     }
-    
-    if(isDev){
+
+    if (isDev) {
         autoUpdater.autoInstallOnAppQuit = false
         autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml')
     }
-    if(process.platform === 'darwin'){
+    if (process.platform === 'darwin') {
         autoUpdater.autoDownload = false
     }
     autoUpdater.on('update-available', (info) => {
@@ -43,12 +45,12 @@ function initAutoUpdater(event, data) {
     })
     autoUpdater.on('error', (err) => {
         event.sender.send('autoUpdateNotification', 'realerror', err)
-    }) 
+    })
 }
 
 // Open channel to listen for update actions.
 ipcMain.on('autoUpdateAction', (event, arg, data) => {
-    switch(arg){
+    switch (arg) {
         case 'initAutoUpdater':
             console.log('Initializing auto updater.')
             initAutoUpdater(event, data)
@@ -61,9 +63,9 @@ ipcMain.on('autoUpdateAction', (event, arg, data) => {
                 })
             break
         case 'allowPrereleaseChange':
-            if(!data){
+            if (!data) {
                 const preRelComp = semver.prerelease(app.getVersion())
-                if(preRelComp != null && preRelComp.length > 0){
+                if (preRelComp != null && preRelComp.length > 0) {
                     autoUpdater.allowPrerelease = true
                 } else {
                     autoUpdater.allowPrerelease = data
@@ -92,7 +94,7 @@ ipcMain.handle(SHELL_OPCODE.TRASH_ITEM, async (event, ...args) => {
         return {
             result: true
         }
-    } catch(error) {
+    } catch (error) {
         return {
             result: false,
             error: error
@@ -134,7 +136,7 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGIN, (ipcEvent, ...arguments_) => {
     })
 
     msftAuthWindow.on('close', () => {
-        if(!msftAuthSuccess) {
+        if (!msftAuthSuccess) {
             ipcEvent.reply(MSFT_OPCODE.REPLY_LOGIN, MSFT_REPLY_TYPE.ERROR, MSFT_ERROR.NOT_FINISHED, msftAuthViewOnClose)
         }
     })
@@ -187,31 +189,31 @@ ipcMain.on(MSFT_OPCODE.OPEN_LOGOUT, (ipcEvent, uuid, isLastAccount) => {
     })
 
     msftLogoutWindow.on('close', () => {
-        if(!msftLogoutSuccess) {
+        if (!msftLogoutSuccess) {
             ipcEvent.reply(MSFT_OPCODE.REPLY_LOGOUT, MSFT_REPLY_TYPE.ERROR, MSFT_ERROR.NOT_FINISHED)
-        } else if(!msftLogoutSuccessSent) {
+        } else if (!msftLogoutSuccessSent) {
             msftLogoutSuccessSent = true
             ipcEvent.reply(MSFT_OPCODE.REPLY_LOGOUT, MSFT_REPLY_TYPE.SUCCESS, uuid, isLastAccount)
         }
     })
-    
+
     msftLogoutWindow.webContents.on('did-navigate', (_, uri) => {
-        if(uri.startsWith('https://login.microsoftonline.com/common/oauth2/v2.0/logoutsession')) {
+        if (uri.startsWith('https://login.microsoftonline.com/common/oauth2/v2.0/logoutsession')) {
             msftLogoutSuccess = true
             setTimeout(() => {
-                if(!msftLogoutSuccessSent) {
+                if (!msftLogoutSuccessSent) {
                     msftLogoutSuccessSent = true
                     ipcEvent.reply(MSFT_OPCODE.REPLY_LOGOUT, MSFT_REPLY_TYPE.SUCCESS, uuid, isLastAccount)
                 }
 
-                if(msftLogoutWindow) {
+                if (msftLogoutWindow) {
                     msftLogoutWindow.close()
                     msftLogoutWindow = null
                 }
             }, 5000)
         }
     })
-    
+
     msftLogoutWindow.removeMenu()
     msftLogoutWindow.loadURL('https://login.microsoftonline.com/common/oauth2/v2.0/logout')
 })
@@ -254,8 +256,8 @@ function createWindow() {
 }
 
 function createMenu() {
-    
-    if(process.platform === 'darwin') {
+
+    if (process.platform === 'darwin') {
 
         // Extend default included application menu to continue support for quit keyboard shortcut
         let applicationSubMenu = {
@@ -317,9 +319,9 @@ function createMenu() {
 
 }
 
-function getPlatformIcon(filename){
+function getPlatformIcon(filename) {
     let ext
-    switch(process.platform) {
+    switch (process.platform) {
         case 'win32':
             ext = 'ico'
             break
@@ -352,68 +354,28 @@ app.on('activate', () => {
     }
 })
 
-const client = require('discord-rich-presence')('1066511691048828998');
-const net = require('net')
+client.updatePresence({
+    state: '🌙 Idling...',
+    largeImageKey: 'paladrill',
+    instance: false,
+});
 
-port = 60514
-address = "game1-fr.hosterfy.com"
+e = 1337;
+setInterval(() => {
+    srv.refreshServerStatus4Index().then(result => {
+        if (e == result.players.online) {
+            return console.log("Don't need to refresh server status");
+        } else { e = result.players.online };
 
-  if(port == null || port == ''){
-    port = 25565
-}
-if(typeof port === 'string'){
-    port = parseInt(port)
-}
-
-return new Promise((resolve, reject) => {
-    const socket = net.connect(port, address, () => {
-        let buff = Buffer.from([0xFE, 0x01])
-        socket.write(buff)
+        client.updatePresence({
+            state: 'On Paladrill',
+            details: 'discord.gg/RMqDM59Ru6',
+            startTimestamp: new Date().getTime(),
+            largeImageKey: 'paladrill',
+            largeImageText: `Server on "${result.version.name}"`,
+            smallImageKey: 'online',
+            smallImageText: `Server have ${result.players.online} players connected.`,
+            instance: false,
+        });
     })
-
-    socket.setTimeout(2500, () => {
-        socket.end()
-        reject({
-            code: 'ETIMEDOUT',
-            errno: 'ETIMEDOUT',
-            address,
-            port
-        })
-    })
-
-    socket.on('data', (data) => {
-        if(data != null && data != ''){
-            let server_info = data.toString().split('\x00\x00\x00')
-            const NUM_FIELDS = 6
-            if(server_info != null && server_info.length >= NUM_FIELDS){
-                e = ({
-                    online: true,
-                    version: server_info[2].replace(/\u0000/g, ''),
-                    motd: server_info[3].replace(/\u0000/g, ''),
-                    onlinePlayers: server_info[4].replace(/\u0000/g, ''),
-                    maxPlayers: server_info[5].replace(/\u0000/g,'')
-                })
-                client.updatePresence({
-                    state: '⛏️ On Paladrill Launcher',
-                    details: '⛏️ pala.best',
-                    startTimestamp: new Date().getTime(),
-                    largeImageKey: 'paladrill',
-                    largeImageText: `Server on ${e.version}`,
-                    smallImageKey: 'online',
-                    smallImageText: `Server have ${e.onlinePlayers} players connected.`,
-                    instance: false,
-                  });
-            } else {
-                resolve({
-                    online: false
-                })
-            }
-        }
-        socket.end()
-    })
-
-    socket.on('error', (err) => {
-        socket.destroy()
-        reject(err)
-    })
-})  
+}, 70000)
