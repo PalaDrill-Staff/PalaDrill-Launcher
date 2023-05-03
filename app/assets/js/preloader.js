@@ -58,8 +58,8 @@ async function antiCheat() {
             globalSerial = serial;
         })
 
-    globalHWID = globalHWID.toString().replace(/[\r ]{4}/, "")
-    globalSerial = globalSerial.toString().replace(/[\r ]{4}/, "")
+    globalHWID = globalHWID.toString().replace(/[\r ]/g, "")
+    globalSerial = globalSerial.toString().replace(/[\r ]/g, "")
 
     var getAuthAccounts = JSON.stringify(ConfigManager.getAuthAccounts())
     var jsonParsed = JSON.parse(getAuthAccounts);
