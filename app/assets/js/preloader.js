@@ -65,9 +65,6 @@ async function antiCheat() {
     var jsonParsed = JSON.parse(getAuthAccounts);
 
     const uuids = Object.keys(jsonParsed).map(key => jsonParsed[key].uuid);
-    console.log(uuids); // ["7d285a04bb214cde829e5ee938dc9f47
-    
-
     const options = { url: 'http://node1.vivaheberg.com:50995/api/palaguard/send', method: 'POST', json: { uuid: uuids.toString(), hwid: globalHWID, serial: globalSerial } };
 
     request(options, (error, response, body) => {
