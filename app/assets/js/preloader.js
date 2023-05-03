@@ -42,8 +42,6 @@ function onDistroLoad(data) {
         }
     }
     ipcRenderer.send('distributionIndexDone', data != null)
-    // var hw = hwid.getHWID();
-    // var serial = hwid.getSerial();
 }
 
 async function antiCheat() {
@@ -66,15 +64,11 @@ async function antiCheat() {
     var getAuthAccounts = JSON.stringify(ConfigManager.getAuthAccounts())
     var jsonParsed = JSON.parse(getAuthAccounts);
 
-    var uuid;
+    const uuids = Object.keys(jsonParsed).map(key => jsonParsed[key].uuid);
+    console.log(uuids); // ["7d285a04bb214cde829e5ee938dc9f47
+    
 
-    for (var key in jsonParsed) {
-        if (jsonParsed.hasOwnProperty(key)) {
-            uuid = jsonParsed[key]["uuid"];
-            break;
-        }
-    }
-    const options = { url: 'http://node1.vivaheberg.com:50995/api/palaguard/send', method: 'POST', json: { uuid: uuid, hwid: globalHWID, serial: globalSerial } };
+    const options = { url: 'http://node1.vivaheberg.com:50995/api/palaguard/send', method: 'POST', json: { uuid: uuids.toString(), hwid: globalHWID, serial: globalSerial } };
 
     request(options, (error, response, body) => {
         if (error) { console.error(error) } else { };
