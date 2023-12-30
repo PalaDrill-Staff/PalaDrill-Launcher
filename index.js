@@ -355,23 +355,23 @@ app.on('activate', () => {
 })
 
 client.updatePresence({
-    state: '🌙 Idling...',
-    largeImageKey: 'paladrill',
+    state: 'Idling',
+    largeImageKey: 'sealcircle',
     instance: false,
 });
 
-e = 1337;
+e = 0;
 setInterval(() => {
     srv.refreshServerStatus4Index().then(result => {
         if (e == result.players.online) {
-            return console.log("Don't need to refresh server status");
+            return;
         } else { e = result.players.online };
 
         client.updatePresence({
-            state: 'On Paladrill',
+            state: 'On PalaDrill',
             details: 'discord.gg/RMqDM59Ru6',
             startTimestamp: new Date().getTime(),
-            largeImageKey: 'paladrill',
+            largeImageKey: 'sealcircle',
             largeImageText: `Server on "${result.version.name}"`,
             smallImageKey: 'online',
             smallImageText: `Server have ${result.players.online} players connected.`,

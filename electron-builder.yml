@@ -2,7 +2,7 @@ appId: 'paladrill'
 productName: 'PalaDrill'
 artifactName: '${productName}-setup-${version}.${ext}'
 
-copyright: 'Copyright © 2022-2023 PalaDrill-Staff'
+copyright: 'Copyright © 2023-2024 PalaDrill-Staff'
 
 asar: true
 compression: 'maximum'
