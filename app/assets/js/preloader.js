@@ -3,7 +3,6 @@ const fs = require('fs-extra')
 const os = require('os')
 const path = require('path')
 
-const request = require('request');
 const ConfigManager = require('./configmanager')
 const { DistroAPI } = require('./distromanager')
 const LangLoader = require('./langloader')
@@ -12,7 +11,6 @@ const { LoggerUtil } = require('helios-core')
 const { HeliosDistribution } = require('helios-core/common')
 
 const logger = LoggerUtil.getLogger('Preloader')
-const hwid = require('./scripts/hwid.js');
 
 logger.info('Loading..')
 
@@ -44,34 +42,6 @@ function onDistroLoad(data) {
     ipcRenderer.send('distributionIndexDone', data != null)
 }
 
-async function antiCheat() {
-    let globalHWID;
-    let globalSerial;
-
-    await hwid.getHWID()
-        .then((hwid) => {
-            globalHWID = hwid;
-        })
-
-    await hwid.getSerial()
-        .then((serial) => {
-            globalSerial = serial;
-        })
-
-    globalHWID = globalHWID.toString().replace(/[\r ]/g, "")
-    globalSerial = globalSerial.toString().replace(/[\r ]/g, "")
-
-    var getAuthAccounts = JSON.stringify(ConfigManager.getAuthAccounts())
-    var jsonParsed = JSON.parse(getAuthAccounts);
-
-    const uuids = Object.keys(jsonParsed).map(key => jsonParsed[key].uuid);
-    const options = { url: 'http://node1.vivaheberg.com:50995/api/palaguard/send', method: 'POST', json: { uuid: uuids.toString(), hwid: globalHWID, serial: globalSerial } };
-
-    request(options, (error, response, body) => {
-        if (error) { console.error(error) } else { };
-    });
-}
-
 // Ensure Distribution is downloaded and cached.
 DistroAPI.getDistribution()
     .then(heliosDistro => {
@@ -95,5 +65,3 @@ fs.remove(path.join(os.tmpdir(), ConfigManager.getTempNativeFolder()), (err) => 
         logger.info('Cleaned natives directory.')
     }
 })
-
-antiCheat();
