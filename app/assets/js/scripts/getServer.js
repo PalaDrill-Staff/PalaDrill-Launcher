@@ -11,7 +11,7 @@ const {
 }                             = require('helios-core/mojang')
 
 const refreshServerStatus4Index = async (fade = false) => {
-    const servStat = await getServerStatus(47, "node1.vivaheberg.com", "25908")
+    const servStat = await getServerStatus(47, "play.paladrill.ovh", "25565")
     return servStat;
 }
 
