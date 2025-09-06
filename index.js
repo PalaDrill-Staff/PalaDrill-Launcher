@@ -1,6 +1,4 @@
 const remoteMain = require('@electron/remote/main')
-const client = require('discord-rich-presence')('1066511691048828998');
-const srv = require('./app/assets/js/scripts/getServer')
 remoteMain.initialize()
 
 // Requirements
@@ -353,29 +351,3 @@ app.on('activate', () => {
         createWindow()
     }
 })
-
-client.updatePresence({
-    state: 'Idling',
-    largeImageKey: 'sealcircle',
-    instance: false,
-});
-
-e = 0;
-setInterval(() => {
-    srv.refreshServerStatus4Index().then(result => {
-        if (e == result.players.online) {
-            return;
-        } else { e = result.players.online };
-
-        client.updatePresence({
-            state: 'On PalaDrill',
-            details: 'discord.gg/RMqDM59Ru6',
-            startTimestamp: new Date().getTime(),
-            largeImageKey: 'sealcircle',
-            largeImageText: `Server on "${result.version.name}"`,
-            smallImageKey: 'online',
-            smallImageText: `Server have ${result.players.online} players connected.`,
-            instance: false,
-        });
-    })
-}, 70000)

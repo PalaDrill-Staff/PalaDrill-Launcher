@@ -26,7 +26,6 @@
     "@electron/remote": "^2.0.8",
     "adm-zip": "^0.5.9",
     "child_process": "^1.0.2",
-    "discord-rich-presence": "^0.0.8",
     "discord-rpc-patch": "^4.0.1",
     "ejs": "^3.1.9",
     "ejs-electron": "^2.1.1",

@@ -8,17 +8,13 @@ const { Client } = require('discord-rpc-patch')
 let client
 let activity
 
-exports.initRPC = function(genSettings, servSettings, initialDetails = 'Waiting for Client..'){
+exports.initRPC = function () {
     client = new Client({ transport: 'ipc' })
 
     activity = {
-        details: initialDetails,
-        state: 'Server: ' + servSettings.shortId,
-        largeImageKey: servSettings.largeImageKey,
-        largeImageText: servSettings.largeImageText,
-        smallImageKey: genSettings.smallImageKey,
-        smallImageText: genSettings.smallImageText,
         startTimestamp: new Date().getTime(),
+        largeImageKey: 'paladrill',
+        smallImageKey: 'online',
         instance: false
     }
 
@@ -26,9 +22,9 @@ exports.initRPC = function(genSettings, servSettings, initialDetails = 'Waiting 
         logger.info('Discord RPC Connected')
         client.setActivity(activity)
     })
-    
-    client.login({clientId: genSettings.clientId}).catch(error => {
-        if(error.message.includes('ENOENT')) {
+
+    client.login({ clientId: '1413636046008225802' }).catch(error => {
+        if (error.message.includes('ENOENT')) {
             logger.info('Unable to initialize Discord Rich Presence, no client detected.')
         } else {
             logger.info('Unable to initialize Discord Rich Presence: ' + error.message, error)
@@ -36,13 +32,13 @@ exports.initRPC = function(genSettings, servSettings, initialDetails = 'Waiting 
     })
 }
 
-exports.updateDetails = function(details){
+exports.updateDetails = function (details) {
     activity.details = details
     client.setActivity(activity)
 }
 
-exports.shutdownRPC = function(){
-    if(!client) return
+exports.shutdownRPC = function () {
+    if (!client) return
     client.clearActivity()
     client.destroy()
     client = null
