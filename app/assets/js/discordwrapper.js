@@ -33,7 +33,7 @@ exports.initRPC = function () {
 }
 
 exports.updateDetails = function (details) {
-    activity.details = details
+    activity.details = String(details).substring(0, 120)
     client.setActivity(activity)
 }
 
